@@ -7,16 +7,19 @@ public class CharacterBehavior : MonoBehaviour
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
 
-    private Rigidbody rb;
-    private bool isGrounded;
+    private Rigidbody _rb;
+    private bool _isGrounded;
+    private GameManagerBehavior _gameManager;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        // Get Game Manager
+        _gameManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManagerBehavior>();
 
         // Sets up the player RigidBody component
-        rb = GetComponent<Rigidbody>();
-        if (rb == null)
+        _rb = GetComponent<Rigidbody>();
+        if (_rb == null)
         {
             Debug.LogWarning("Player object is missing RigidBody component");
         }
@@ -47,27 +50,26 @@ public class CharacterBehavior : MonoBehaviour
     private void Move()
     {
         float moveX = Input.GetAxis("Horizontal");
-        rb.linearVelocity = new Vector3(moveX * moveSpeed, rb.linearVelocity.y, 0f);
+        _rb.linearVelocity = new Vector3(moveX * moveSpeed, _rb.linearVelocity.y, 0f);
     }
 
     private void CheckGrounded()
     {
-        isGrounded = Physics.CheckSphere(groundCheck.position, 0.05f, groundLayer);
+        _isGrounded = Physics.CheckSphere(groundCheck.position, 0.05f, groundLayer);
     }
 
     private void Jump()
     {
-        if (Input.GetButtonDown("Jump") && isGrounded)
+        if (Input.GetButtonDown("Jump") && _isGrounded)
         {
-            rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpForce, 0f);
+            _rb.linearVelocity = new Vector3(_rb.linearVelocity.x, jumpForce, 0f);
         }
     }
 
     private void Reset()
     {
         if (Input.GetKeyDown(KeyCode.R)) {
-            transform.SetPositionAndRotation(new Vector3(0, 5, 0), Quaternion.identity);
-            rb.linearVelocity = new Vector3(0, 0, 0);
+            _gameManager.ResetScene();
         }
     }
 
