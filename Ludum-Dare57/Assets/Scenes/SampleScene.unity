@@ -408,6 +408,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4973ebe2a77ed2d4ab66e2569d40b207, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainCamera: {fileID: 330585545}
   target: {fileID: 1361116719}
   offset: {x: 0, y: 0, z: -10}
 --- !u!1 &832575517
