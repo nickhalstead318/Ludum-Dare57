@@ -7,8 +7,8 @@ public class CharacterBehavior : MonoBehaviour
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
 
-    private Rigidbody _rb;
-    private bool _isGrounded;
+    private Rigidbody2D _rb;
+    public bool _isGrounded;
     private GameManagerBehavior _gameManager;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -18,7 +18,7 @@ public class CharacterBehavior : MonoBehaviour
         _gameManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManagerBehavior>();
 
         // Sets up the player RigidBody component
-        _rb = GetComponent<Rigidbody>();
+        _rb = GetComponent<Rigidbody2D>();
         if (_rb == null)
         {
             Debug.LogWarning("Player object is missing RigidBody component");
@@ -55,15 +55,20 @@ public class CharacterBehavior : MonoBehaviour
 
     private void CheckGrounded()
     {
-        _isGrounded = Physics.CheckSphere(groundCheck.position, 0.05f, groundLayer);
+        // _isGrounded = Physics.CheckSphere(groundCheck.position, 0.1f, groundLayer);
     }
 
     private void Jump()
     {
         if (Input.GetButtonDown("Jump") && _isGrounded)
         {
-            _rb.linearVelocity = new Vector3(_rb.linearVelocity.x, jumpForce, 0f);
+            _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, jumpForce);
+            _isGrounded = false;
         }
+    }
+
+    private void OnCollisionStay2D(Collision2D collision) {
+        _isGrounded = true;
     }
 
     private void Reset()
