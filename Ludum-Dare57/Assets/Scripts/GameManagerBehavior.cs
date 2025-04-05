@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 public class GameManagerBehavior : MonoBehaviour
 {
     public int cloneMax = 2;
+    public CameraBehavior cameraBehavior;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -49,6 +50,9 @@ public class GameManagerBehavior : MonoBehaviour
         // Get the next character to activate
         int nextIndex = (currentIndex + 1) % players.Length;
         players[nextIndex].Activate();
+
+        // Update the camera to follow the right character
+        cameraBehavior.UpdateTarget(players[nextIndex].transform);
     }
 
     public bool CanCreateClone() {

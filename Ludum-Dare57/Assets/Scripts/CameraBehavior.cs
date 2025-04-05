@@ -49,6 +49,12 @@ public class CameraBehavior : MonoBehaviour
         mainCamera.backgroundColor = CalcBackgroundColor();
     }
 
+    public void UpdateTarget(Transform newTarget)
+    {
+        // Update the target we are following
+        target = newTarget;
+    }
+
     private Color CalcBackgroundColor()
     {
         step = (target.position.y - startHeight) / endHeight;
