@@ -10,6 +10,7 @@ public class CharacterBehavior : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
 
     private bool isActivePlayer;
+    private bool isActivating = false;
     private bool isClone;
     private Rigidbody2D _rb;
     public bool _isGrounded;
@@ -23,7 +24,6 @@ public class CharacterBehavior : MonoBehaviour
     {
         // Get Game Manager
         _gameManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManagerBehavior>();
-        _gameManager.RegisterPlayer(this);
 
         // Get Canvas
         _cloneTimer = transform.Find("Timer");
@@ -47,7 +47,7 @@ public class CharacterBehavior : MonoBehaviour
             Debug.LogWarning("Player object does not have a ground layer defined");
         }
 
-        // Define if this is the active player
+        // Define if this is the active player, clones start inactive and begin their death timer
         if (isClone)
         {
             Deactivate();
@@ -95,19 +95,30 @@ public class CharacterBehavior : MonoBehaviour
 
     private void CountdownTimer()
     {
+        // Clone's count down their timer of how long until they die
         if (isClone)
         {
+            // Update the timer
             timeToDestroy -= Time.deltaTime;
             if(timeToDestroy <= 0f)
             {
-                _gameManager.UnregisterPlayer(this);
+                // Switch active player if this clone was the active one
+                if(getIsActive() || isActivating)
+                {
+                    _gameManager.GetNextPlayer();
+                }
+
+                // Destroy the clone
                 Destroy(gameObject);
             }
             else
             {
+                // Update the clone timer image to represent how much time it has left
                 Transform timerFill = _cloneTimer.transform.Find("Fill");
                 float fillAmount = timeToDestroy / maxTimer;
                 timerFill.GetComponent<Image>().fillAmount = fillAmount;
+
+                // Set the color based on how full the circle is
                 if(fillAmount <= 0.25f)
                 {
                     timerFill.GetComponent<Image>().color = Color.red;
@@ -126,6 +137,7 @@ public class CharacterBehavior : MonoBehaviour
 
     private void Reset()
     {
+        // Reset the current scene. Helpful for a soft lock!
         if (Input.GetKeyDown(KeyCode.R)) {
             _gameManager.ResetScene();
         }
@@ -133,7 +145,8 @@ public class CharacterBehavior : MonoBehaviour
 
     private void CreateClone()
     {
-        if (_gameManager.CanCreateClone() && Input.GetKeyDown(KeyCode.E))
+        // Check to see if new clones can be made, and makes one if so. Clones cannot make clones
+        if (_gameManager.CanCreateClone() && !isClone && Input.GetKeyDown(KeyCode.E))
         {
             GameObject clone = Instantiate(gameObject, transform.position, Quaternion.identity);
             CharacterBehavior cloneBehavior = clone.GetComponent<CharacterBehavior>();
@@ -143,6 +156,10 @@ public class CharacterBehavior : MonoBehaviour
 
     public void Activate()
     {
+        // Make sure we know that we have queued up an activation, so that if the clone dies in the meantime, we can switch again
+        isActivating = true;
+
+        // Add a slight delay to marking the clone active so that we don't get duplicative inputs
         StartCoroutine(ActivateAfterDelay(0.1f));
     }
 
@@ -151,10 +168,12 @@ public class CharacterBehavior : MonoBehaviour
         yield return new WaitForSeconds(delay);
 
         isActivePlayer = true;
+        isActivating = false;
     }
 
     public void Deactivate()
     {
+        // Deactivate this player
         isActivePlayer = false;
     }
 
@@ -173,6 +192,11 @@ public class CharacterBehavior : MonoBehaviour
             _cloneTimer.gameObject.SetActive(true);
             timeToDestroy = maxTimer;
         }
+    }
+
+    public bool getIsActive()
+    {
+        return isActivePlayer;
     }
 
     void OnDrawGizmosSelected()
