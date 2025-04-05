@@ -1,4 +1,6 @@
+using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -6,6 +8,15 @@ public class GameManagerBehavior : MonoBehaviour
 {
     public int cloneMax = 2;
     public CameraBehavior cameraBehavior;
+
+    private Coroutine typingCoroutine;
+    private string fullTextToDisplay;
+    [SerializeField]
+    private float typingSpeed = 3.0f;
+    [SerializeField]
+    private TextMeshProUGUI textBoxText;
+    [SerializeField]
+    private Canvas textBoxCanvas;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -16,7 +27,26 @@ public class GameManagerBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            if (typingCoroutine != null && textBoxText.text != fullTextToDisplay)
+            {
+                // If the user interrupts the typing, immediately display the full text
+                StopCoroutine(typingCoroutine);
+                textBoxText.text = fullTextToDisplay;
+            }
+            else if (!textBoxCanvas.gameObject.activeSelf)
+            {
+                // Debug for now, just shows the text if it isn't there already. Remove later
+                textBoxCanvas.gameObject.SetActive(true);
+                StartTyping("Something must stay behind...");
+            }
+            else
+            {
+                // If the text is already displayed, close the box
+                textBoxCanvas.gameObject.SetActive(false);
+            }
+        }
     }
 
     public void ResetScene()
@@ -67,5 +97,31 @@ public class GameManagerBehavior : MonoBehaviour
 
         // Otherwise, clone to your heart's content
         return true;
+    }
+
+    public void StartTyping(string message)
+    {
+        // Stop any current coroutines that are typing
+        if (typingCoroutine != null)
+        {
+            StopCoroutine(typingCoroutine);
+        }
+
+        // Set the full message and start typing it
+        fullTextToDisplay = message;
+        typingCoroutine = StartCoroutine(TypeText());
+    }
+
+    IEnumerator TypeText()
+    {
+        // Reset Text
+        textBoxText.text = "";
+
+        // Loop over slowly adding one character at a time
+        foreach (char c in fullTextToDisplay)
+        {
+            textBoxText.text += c;
+            yield return new WaitForSeconds(typingSpeed);
+        }
     }
 }
