@@ -56,8 +56,6 @@ public class CameraBehavior : MonoBehaviour
         float currGreen = startColor.g + (endColor.g - startColor.g) * step / numSteps;
         float currBlue = startColor.b + (endColor.b - startColor.b) * step / numSteps;
 
-        Debug.Log(String.Format("Color info: ({0}, {1}, {2}) on step {3}", currRed, currGreen, currBlue, step));
-
         //step = (step + 1) % numSteps;
 
         return new Color(currRed / 255, currGreen / 255, currBlue / 255);
