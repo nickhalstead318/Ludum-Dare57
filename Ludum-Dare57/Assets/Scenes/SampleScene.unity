@@ -1174,6 +1174,10 @@ PrefabInstance:
       propertyPath: camera
       value: 
       objectReference: {fileID: 330585548}
+    - target: {fileID: -5492088091489643674, guid: e3d4c76f543d986478af6e4798ea7f3e, type: 3}
+      propertyPath: cameraBehavior
+      value: 
+      objectReference: {fileID: 330585548}
     - target: {fileID: 5991176335042269492, guid: e3d4c76f543d986478af6e4798ea7f3e, type: 3}
       propertyPath: m_Name
       value: GameManager
