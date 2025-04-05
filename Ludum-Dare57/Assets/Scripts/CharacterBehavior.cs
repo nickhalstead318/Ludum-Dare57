@@ -55,7 +55,7 @@ public class CharacterBehavior : MonoBehaviour
 
     private void CheckGrounded()
     {
-        _isGrounded = Physics.Raycast(groundCheck.position, -Vector3.up, 0.05f);
+        _isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.05f, LayerMask.GetMask("Ground"));
     }
 
     private void Jump()
