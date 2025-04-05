@@ -7,10 +7,13 @@ public class CameraBehavior : MonoBehaviour
     public Transform target;
     public Vector3 offset;
 
-    private int numSteps = 600;
-    private int step = 0;
+    private float numSteps = 20;
+    private float step = 0;
     private Color startColor = new Color(164, 121, 109);
     private Color endColor = new Color(51, 33, 29);
+
+    private float startHeight = 10;
+    private float endHeight = -10;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -35,6 +38,8 @@ public class CameraBehavior : MonoBehaviour
         {
             Debug.LogWarning("Confirm camera Z offset should be: " + offset.z);
         }
+
+        numSteps = startHeight - endHeight;
     }
 
     // Called once per frame
@@ -46,14 +51,15 @@ public class CameraBehavior : MonoBehaviour
 
     private Color CalcBackgroundColor()
     {
-        float currRed = startColor.r + endColor.r - startColor.r * step / numSteps;
-        float currGreen = startColor.g + endColor.g - startColor.g * step / numSteps;
-        float currBlue = startColor.b + endColor.b - startColor.b * step / numSteps;
+        step = (target.position.y - startHeight) / endHeight;
+        float currRed = startColor.r + (endColor.r - startColor.r) * step / numSteps;
+        float currGreen = startColor.g + (endColor.g - startColor.g) * step / numSteps;
+        float currBlue = startColor.b + (endColor.b - startColor.b) * step / numSteps;
 
-        // Debug.Log(String.Format("Color info: ({0}, {1}, {2}) on step {3}", currRed, currGreen, currBlue, step));
+        Debug.Log(String.Format("Color info: ({0}, {1}, {2}) on step {3}", currRed, currGreen, currBlue, step));
 
-        step = (step + 1) % numSteps;
+        //step = (step + 1) % numSteps;
 
-        return new Color(currRed / 256, currGreen / 256, currBlue / 256);
+        return new Color(currRed / 255, currGreen / 255, currBlue / 255);
     }
 }

@@ -55,7 +55,7 @@ public class CharacterBehavior : MonoBehaviour
 
     private void CheckGrounded()
     {
-        // _isGrounded = Physics.CheckSphere(groundCheck.position, 0.1f, groundLayer);
+        _isGrounded = Physics.Raycast(groundCheck.position, -Vector3.up, 0.05f);
     }
 
     private void Jump()
@@ -63,12 +63,7 @@ public class CharacterBehavior : MonoBehaviour
         if (Input.GetButtonDown("Jump") && _isGrounded)
         {
             _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, jumpForce);
-            _isGrounded = false;
         }
-    }
-
-    private void OnCollisionStay2D(Collision2D collision) {
-        _isGrounded = true;
     }
 
     private void Reset()
