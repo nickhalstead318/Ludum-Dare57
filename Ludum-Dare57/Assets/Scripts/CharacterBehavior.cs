@@ -13,6 +13,7 @@ public class CharacterBehavior : MonoBehaviour
     private bool isActivating = false;
     private bool isClone;
     private Rigidbody2D _rb;
+    private BoxCollider2D _boxCollider;
     public bool _isGrounded;
     private GameManagerBehavior _gameManager;
     private float maxTimer = 10f;
@@ -33,6 +34,13 @@ public class CharacterBehavior : MonoBehaviour
         if (_rb == null)
         {
             Debug.LogWarning("Player object is missing RigidBody component");
+        }
+
+        // Sets up the player BoxCollider2D component
+        _boxCollider = GetComponent<BoxCollider2D>();
+        if (_boxCollider == null)
+        {
+            Debug.LogWarning("Player object is missing BoxCollider2D component");
         }
 
         // Ensures ground check (feet/bottom of player) transform is set up
@@ -82,7 +90,19 @@ public class CharacterBehavior : MonoBehaviour
 
     private void CheckGrounded()
     {
-        _isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.05f, LayerMask.GetMask("Ground"));
+        Collider2D[] collisions = Physics2D.OverlapBoxAll(groundCheck.position, _boxCollider.size, LayerMask.GetMask("Ground"));
+        foreach (var hit in collisions)
+        {
+            if (hit.gameObject == gameObject) continue; // ignore self
+
+            if (hit.CompareTag("Platform") || hit.CompareTag("Player"))
+            {
+                _isGrounded = true;
+                return;
+            }
+        }
+
+        _isGrounded = false;
     }
 
     private void Jump()
