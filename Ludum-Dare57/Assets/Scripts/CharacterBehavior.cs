@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -100,6 +101,7 @@ public class CharacterBehavior : MonoBehaviour
                 _isGrounded = true;
                 return;
             }
+
         }
 
         _isGrounded = false;
