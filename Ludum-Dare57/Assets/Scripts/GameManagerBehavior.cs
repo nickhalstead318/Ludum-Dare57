@@ -228,7 +228,6 @@ public class GameManagerBehavior : MonoBehaviour
 
         Time.timeScale = 0f;
         isPaused = true;
-        exitScreenFadeSpeed /= 2f;
 
         for (float alpha = 0; alpha <= 220f; alpha += 10)
         {
