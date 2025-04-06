@@ -5,10 +5,11 @@ using UnityEngine.UI;
 
 public class CharacterBehavior : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] private float jumpForce = 7f;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
+
+    private float moveSpeed = 5f;
+    private float jumpForce = 7f;
 
     private bool isActivePlayer;
     private bool isActivating = false;
