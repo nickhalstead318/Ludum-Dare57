@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManagerBehavior : MonoBehaviour
 {
@@ -19,6 +20,19 @@ public class GameManagerBehavior : MonoBehaviour
     private float typingSpeed = 3.0f;
     private bool isPaused;
 
+
+    [SerializeField]
+    private GameObject exitScreenUI;
+    [SerializeField]
+    private float exitScreenFadeSpeed = 5f;
+    [SerializeField]
+    private TextMeshProUGUI wellDoneText;
+    [SerializeField]
+    private TextMeshProUGUI keepGoingText;
+    [SerializeField]
+    private Image descendButton;
+    [SerializeField]
+    private Image mainMenuButton;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -89,6 +103,27 @@ public class GameManagerBehavior : MonoBehaviour
         SceneManager.LoadScene(activeScene);
     }
 
+    public void LoadNextScene()
+    {
+        Time.timeScale = 1f;
+
+        // Get the next level in the index
+        int currentIndex = SceneManager.GetActiveScene().buildIndex;
+        int nextIndex = currentIndex + 1;
+
+        // Transition to next scene
+        if (nextIndex < SceneManager.sceneCountInBuildSettings)
+        {
+            SceneManager.LoadScene(nextIndex);
+        }
+        else
+        {
+            Debug.Log("Last scene reached! Restarting...");
+            // Loop back to first scene
+            SceneManager.LoadScene(0);
+        }
+    }
+
     public void GetNextPlayer()
     {
         // Get current list of characters in the scene
@@ -156,6 +191,65 @@ public class GameManagerBehavior : MonoBehaviour
         {
             textBoxText.text += c;
             yield return new WaitForSeconds(typingSpeed);
+        }
+    }
+
+    public void ShowExitScreen()
+    {
+        Image exitScreenImage = exitScreenUI.GetComponent<Image>();
+        exitScreenImage.color = new Color(exitScreenImage.color.r, exitScreenImage.color.g, exitScreenImage.color.b, 0);
+        wellDoneText.color = new Color(wellDoneText.color.r, wellDoneText.color.g, wellDoneText.color.b, 0);
+        keepGoingText.color = new Color(keepGoingText.color.r, keepGoingText.color.g, keepGoingText.color.b, 0);
+
+        descendButton.color = new Color(descendButton.color.r, descendButton.color.g, descendButton.color.b, 0);
+        TextMeshProUGUI descendText = descendButton.GetComponentInChildren<TextMeshProUGUI>();
+        descendText.color = new Color(descendText.color.r, descendText.color.g, descendText.color.b, 0);
+
+        mainMenuButton.color = new Color(mainMenuButton.color.r, mainMenuButton.color.g, mainMenuButton.color.b, 0);
+        TextMeshProUGUI mainMenuText = mainMenuButton.GetComponentInChildren<TextMeshProUGUI>();
+        mainMenuText.color = new Color(mainMenuText.color.r, mainMenuText.color.g, mainMenuText.color.b, 0);
+
+        exitScreenUI.SetActive(true);
+        StartCoroutine(FadeInExitScreen());
+    }
+
+    IEnumerator FadeInExitScreen()
+    {
+        exitScreenFadeSpeed /= 100f;
+        Image exitScreenImage = exitScreenUI.GetComponent<Image>();
+        
+        // Loop over slowly fading the different parts of the screen in
+        for (float alpha = 0; alpha <= 220f; alpha += 10)
+        {
+            Debug.Log(alpha);
+            exitScreenImage.color = new Color(exitScreenImage.color.r, exitScreenImage.color.g, exitScreenImage.color.b, alpha / 255f);
+            yield return new WaitForSecondsRealtime(exitScreenFadeSpeed);
+        }
+
+        Time.timeScale = 0f;
+        isPaused = true;
+
+        for (float alpha = 0; alpha <= 220f; alpha += 10)
+        {
+            wellDoneText.color = new Color(wellDoneText.color.r, wellDoneText.color.g, wellDoneText.color.b, alpha / 255f);
+            yield return new WaitForSecondsRealtime(exitScreenFadeSpeed);
+        }
+
+        for (float alpha = 0; alpha <= 220f; alpha += 10)
+        {
+            keepGoingText.color = new Color(keepGoingText.color.r, keepGoingText.color.g, keepGoingText.color.b, alpha / 255f);
+            yield return new WaitForSecondsRealtime(exitScreenFadeSpeed);
+        }
+
+        TextMeshProUGUI descendText = descendButton.GetComponentInChildren<TextMeshProUGUI>();
+        TextMeshProUGUI mainMenuText = mainMenuButton.GetComponentInChildren<TextMeshProUGUI>();
+        for (float alpha = 0; alpha <= 220f; alpha += 10)
+        {
+            descendButton.color = new Color(descendButton.color.r, descendButton.color.g, descendButton.color.b, alpha / 255f);
+            descendText.color = new Color(descendText.color.r, descendText.color.g, descendText.color.b, alpha / 255f);
+            mainMenuButton.color = new Color(mainMenuButton.color.r, mainMenuButton.color.g, mainMenuButton.color.b, alpha / 255f);
+            mainMenuText.color = new Color(mainMenuText.color.r, mainMenuText.color.g, mainMenuText.color.b, alpha / 255f);
+            yield return new WaitForSecondsRealtime(exitScreenFadeSpeed);
         }
     }
 }

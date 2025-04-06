@@ -4,11 +4,12 @@ public class ExitLevelBehavior : MonoBehaviour
 {
     [SerializeField]
     CameraBehavior cameraBehavior;
+    GameManagerBehavior _gameManager;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        _gameManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManagerBehavior>();
     }
 
     // Update is called once per frame
@@ -17,15 +18,16 @@ public class ExitLevelBehavior : MonoBehaviour
         
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
+    private void OnTriggerExit2D(Collider2D collider)
     {
-        if(collision != null && collision.collider.CompareTag("Player"))
+        if (collider != null && collider.CompareTag("Player"))
         {
-            CharacterBehavior player = collision.collider.GetComponent<CharacterBehavior>();
+            CharacterBehavior player = collider.GetComponent<CharacterBehavior>();
 
             if (player != null && player.getIsPrime())
             {
                 cameraBehavior.UpdateTarget(null);
+                _gameManager.ShowExitScreen();
             }
         }
     }
