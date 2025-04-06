@@ -9,8 +9,8 @@ public class CameraBehavior : MonoBehaviour
 
     private float numSteps = 20;
     private float step = 0;
-    private Color startColor = new Color(164, 121, 109);
-    private Color endColor = new Color(51, 33, 29);
+    private Color startColor = new Color(255, 255, 255);
+    private Color endColor = new Color(164, 121, 109);
 
     private float startHeight = 10;
     private float endHeight = -10;
@@ -46,7 +46,6 @@ public class CameraBehavior : MonoBehaviour
     void LateUpdate()
     {
         transform.position = target.position + offset;
-        mainCamera.backgroundColor = CalcBackgroundColor();
     }
 
     public Transform GetTarget()
@@ -60,15 +59,5 @@ public class CameraBehavior : MonoBehaviour
         target = newTarget;
     }
 
-    private Color CalcBackgroundColor()
-    {
-        step = (target.position.y - startHeight) / endHeight;
-        float currRed = startColor.r + (endColor.r - startColor.r) * step / numSteps;
-        float currGreen = startColor.g + (endColor.g - startColor.g) * step / numSteps;
-        float currBlue = startColor.b + (endColor.b - startColor.b) * step / numSteps;
-
-        //step = (step + 1) % numSteps;
-
-        return new Color(currRed / 255, currGreen / 255, currBlue / 255);
-    }
+    
 }
