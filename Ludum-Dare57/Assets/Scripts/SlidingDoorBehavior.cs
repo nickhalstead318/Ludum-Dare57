@@ -40,7 +40,7 @@ public class SlidingDoorBehavior : MonoBehaviour
         // Debug.Log("I am a door, I am moving up by " + moveUpSpeed + " if I can");
         if (transform.position.y < maxHeight)
         {
-            transform.position = new Vector3(transform.position.x, transform.position.y + moveUpSpeed, 0);
+            transform.position = new Vector3(transform.position.x, transform.position.y + moveUpSpeed * Time.deltaTime, 0);
         }
     }
 
@@ -49,7 +49,7 @@ public class SlidingDoorBehavior : MonoBehaviour
         // Debug.Log("I am a door, I am moving down by " + moveDownSpeed + "if I can");
         if (transform.position.y > minHeight)
         {
-            transform.position = new Vector3(transform.position.x, transform.position.y - moveDownSpeed, 0);
+            transform.position = new Vector3(transform.position.x, transform.position.y - moveDownSpeed * Time.deltaTime, 0);
         }
     }
 }
