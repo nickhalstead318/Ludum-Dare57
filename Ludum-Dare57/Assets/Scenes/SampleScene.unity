@@ -3713,7 +3713,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7892680745420536069, guid: e8225a86ce140c44d94b9aa3c75cb1ad, type: 3}
       propertyPath: m_Mass
-      value: 8
+      value: 1.9656832
       objectReference: {fileID: 0}
     - target: {fileID: 7936336273645516100, guid: e8225a86ce140c44d94b9aa3c75cb1ad, type: 3}
       propertyPath: m_LocalScale.x
@@ -3778,8 +3778,38 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8775904864783767168, guid: e8225a86ce140c44d94b9aa3c75cb1ad, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1833760465}
   m_SourcePrefab: {fileID: 100100000, guid: e8225a86ce140c44d94b9aa3c75cb1ad, type: 3}
+--- !u!1 &1833760464 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8775904864783767168, guid: e8225a86ce140c44d94b9aa3c75cb1ad, type: 3}
+  m_PrefabInstance: {fileID: 1833760463}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1833760465
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1833760464}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: abb4c1eec07b29f4a8cc4d794f398e60, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1881400699
 GameObject:
   m_ObjectHideFlags: 0
@@ -4220,11 +4250,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92d7414fba7058e4bace4c4c7dec5228, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minHeight: 0
-  maxHeight: 0
-  active: 0
-  moveUpSpeed: 9
-  moveDownSpeed: 18
   boxCollider: {fileID: 0}
   buttons:
   - {fileID: 223892605}

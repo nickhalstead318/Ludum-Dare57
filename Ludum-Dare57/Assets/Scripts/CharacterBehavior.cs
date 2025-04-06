@@ -1,6 +1,7 @@
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.UI;
 
 public class CharacterBehavior : MonoBehaviour
@@ -10,6 +11,7 @@ public class CharacterBehavior : MonoBehaviour
 
     private float moveSpeed = 5f;
     private float jumpForce = 7f;
+    private float lastYPos;
 
     private bool isActivePlayer;
     private bool isActivating = false;
@@ -21,6 +23,7 @@ public class CharacterBehavior : MonoBehaviour
     private float maxTimer = 10f;
     private float timeToDestroy = 100f;
     private Transform _cloneTimer;
+    private Animator animator;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -57,6 +60,15 @@ public class CharacterBehavior : MonoBehaviour
             Debug.LogWarning("Player object does not have a ground layer defined");
         }
 
+        // Ensures animator is defined
+        animator = GetComponent<Animator>();
+        if (animator == null)
+        {
+            Debug.LogWarning("Player object does not have an animator defined");
+        }
+
+        lastYPos = transform.position.y;
+
         // Define if this is the active player, clones start inactive and begin their death timer
         if (isClone)
         {
@@ -72,21 +84,33 @@ public class CharacterBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        CheckGrounded();
         if (isActivePlayer)
         {
             Move();
-            CheckGrounded();
             Jump();
-            Reset();
             CreateClone();
             SwitchPlayer();
         }
+        Fall();
         CountdownTimer();
     }
 
     private void Move()
     {
         float moveX = Input.GetAxis("Horizontal");
+        if (Input.GetKey(KeyCode.A))
+        {
+            animator.SetInteger("Move Direction", -1);
+        }
+        else if (Input.GetKey(KeyCode.D))
+        {
+            animator.SetInteger("Move Direction", 1);
+        }
+        else
+        {
+            animator.SetInteger("Move Direction", 0);
+        }
         _rb.linearVelocity = new Vector3(moveX * moveSpeed, _rb.linearVelocity.y, 0f);
     }
 
@@ -100,6 +124,7 @@ public class CharacterBehavior : MonoBehaviour
             if (hit.CompareTag("Platform") || hit.CompareTag("Player"))
             {
                 _isGrounded = true;
+                animator.SetBool("Is Falling", false);
                 return;
             }
 
@@ -113,7 +138,19 @@ public class CharacterBehavior : MonoBehaviour
         if (Input.GetButtonDown("Jump") && _isGrounded)
         {
             _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, jumpForce);
+            animator.SetTrigger("Jump");
         }
+    }
+
+    private void Fall()
+    {
+        // Falling
+        if (transform.position.y < lastYPos && !_isGrounded)
+        {
+            animator.SetBool("Is Falling", true);
+        }
+
+        lastYPos = transform.position.y;
     }
 
     private void CountdownTimer()
@@ -158,23 +195,20 @@ public class CharacterBehavior : MonoBehaviour
         }
     }
 
-    private void Reset()
-    {
-        // Reset the current scene. Helpful for a soft lock!
-        if (Input.GetKeyDown(KeyCode.R)) {
-            _gameManager.ResetScene();
-        }
-    }
-
     private void CreateClone()
     {
         // Check to see if new clones can be made, and makes one if so. Clones cannot make clones
         if (_gameManager.CanCreateClone() && !isClone && Input.GetKeyDown(KeyCode.E))
         {
-            GameObject clone = Instantiate(gameObject, transform.position, Quaternion.identity);
-            CharacterBehavior cloneBehavior = clone.GetComponent<CharacterBehavior>();
-            cloneBehavior.isClone = true;
+            animator.SetTrigger("Split");
         }
+    }
+
+    private void CreateCloneEvent()
+    {
+        GameObject clone = Instantiate(gameObject, transform.position, Quaternion.identity);
+        CharacterBehavior cloneBehavior = clone.GetComponent<CharacterBehavior>();
+        cloneBehavior.isClone = true;
     }
 
     public void Activate()
@@ -205,6 +239,10 @@ public class CharacterBehavior : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             _gameManager.GetNextPlayer();
+
+            // Make sure the player stops moving horizontally
+            _rb.linearVelocity = new Vector3(0f, _rb.linearVelocity.y, 0f);
+            animator.SetInteger("Move Direction", 0);
         }
     }
 
