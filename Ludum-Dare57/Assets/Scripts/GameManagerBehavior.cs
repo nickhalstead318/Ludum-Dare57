@@ -18,6 +18,10 @@ public class GameManagerBehavior : MonoBehaviour
     [SerializeField]
     private Canvas textBoxCanvas;
 
+    private bool isPaused;
+    [SerializeField]
+    private GameObject pauseMenuUI;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -47,10 +51,42 @@ public class GameManagerBehavior : MonoBehaviour
                 textBoxCanvas.gameObject.SetActive(false);
             }
         }
+        else if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (isPaused)
+            {
+                ResumeGame();
+            }
+            else
+            {
+                PauseGame();
+            }
+        }
+    }
+
+    public void ResumeGame()
+    {
+        pauseMenuUI.SetActive(false);
+        Time.timeScale = 1f;
+        isPaused = false;
+    }
+
+    public void PauseGame()
+    {
+        pauseMenuUI.SetActive(true);
+        Time.timeScale = 0f;
+        isPaused = true;
+    }
+
+    public void LoadMainMenu()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("TitleScreen");
     }
 
     public void ResetScene()
     {
+        Time.timeScale = 1f;
         string activeScene = SceneManager.GetActiveScene().name;
         SceneManager.LoadScene(activeScene);
     }
