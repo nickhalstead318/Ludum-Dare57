@@ -7,14 +7,6 @@ public class CameraBehavior : MonoBehaviour
     public Transform target;
     public Vector3 offset;
 
-    private float numSteps = 20;
-    private float step = 0;
-    private Color startColor = new Color(255, 255, 255);
-    private Color endColor = new Color(164, 121, 109);
-
-    private float startHeight = 10;
-    private float endHeight = -10;
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -38,8 +30,6 @@ public class CameraBehavior : MonoBehaviour
         {
             Debug.LogWarning("Confirm camera Z offset should be: " + offset.z);
         }
-
-        numSteps = startHeight - endHeight;
     }
 
     // Called once per frame
