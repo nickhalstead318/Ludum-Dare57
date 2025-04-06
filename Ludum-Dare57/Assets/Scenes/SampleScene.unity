@@ -2860,9 +2860,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minHeight: 0
   maxHeight: 0
+  active: 0
   moveUpSpeed: 9
   moveDownSpeed: 18
   boxCollider: {fileID: 0}
+  buttons:
+  - {fileID: 223892605}
 --- !u!1001 &358941187542157292
 PrefabInstance:
   m_ObjectHideFlags: 0

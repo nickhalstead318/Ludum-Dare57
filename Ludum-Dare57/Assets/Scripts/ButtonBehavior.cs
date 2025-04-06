@@ -64,12 +64,14 @@ public class ButtonBehavior : MonoBehaviour
     {
         isOn = true;
         sprite.sprite = buttonOn;
+        myDoor.CheckIfActive();
     }
 
     void setOff()
     {
         isOn = false;
         sprite.sprite = buttonOff;
+        myDoor.CheckIfActive();
     }
 
     public bool GetStatus()

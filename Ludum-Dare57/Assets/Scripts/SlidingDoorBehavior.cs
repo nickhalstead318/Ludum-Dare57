@@ -47,7 +47,7 @@ public class SlidingDoorBehavior : MonoBehaviour
         //string info = string.Format("Current y: {0}, min y: {1}, max y: {2}", transform.position.y, minHeight, maxHeight);
         // Debug.Log(info);
 
-        CheckIfActive();
+        // CheckIfActive();
 
         if (active)
         {
