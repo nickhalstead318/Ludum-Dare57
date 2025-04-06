@@ -39,14 +39,7 @@ public class ButtonBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isOn)
-        {
-            myDoor.MoveUp();
-        }
-        else
-        {
-            myDoor.MoveDown();
-        }
+
     }
 
     private void OnCollisionStay2D(Collision2D collision)
@@ -67,15 +60,22 @@ public class ButtonBehavior : MonoBehaviour
         }
     }
 
-    public void setOn()
+    void setOn()
     {
         isOn = true;
         sprite.sprite = buttonOn;
+        myDoor.CheckIfActive();
     }
 
-    public void setOff()
+    void setOff()
     {
         isOn = false;
         sprite.sprite = buttonOff;
+        myDoor.CheckIfActive();
+    }
+
+    public bool GetStatus()
+    {
+        return isOn;
     }
 }
