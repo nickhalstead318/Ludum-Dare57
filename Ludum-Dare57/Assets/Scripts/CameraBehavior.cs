@@ -49,6 +49,11 @@ public class CameraBehavior : MonoBehaviour
         mainCamera.backgroundColor = CalcBackgroundColor();
     }
 
+    public Transform GetTarget()
+    {
+        return target;
+    }
+
     public void UpdateTarget(Transform newTarget)
     {
         // Update the target we are following
