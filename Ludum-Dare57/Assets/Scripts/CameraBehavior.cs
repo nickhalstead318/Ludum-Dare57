@@ -22,11 +22,6 @@ public class CameraBehavior : MonoBehaviour
             Debug.LogWarning("Camera script attached to object without camera component");
         }
 
-        if (target == null)
-        {
-            Debug.LogWarning("Camera has no target");
-        }
-
         if (offset == null)
         {
             Debug.LogWarning("Camera offset not defined");
@@ -54,6 +49,12 @@ public class CameraBehavior : MonoBehaviour
 
     public void UpdateTarget(Transform newTarget)
     {
+        if(target == null || newTarget == null)
+        {
+            target = newTarget;
+            return;
+        }
+
         if (switchingCoroutine != null)
         {
             StopCoroutine(switchingCoroutine);
