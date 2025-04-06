@@ -7,6 +7,11 @@ public class ButtonBehavior : MonoBehaviour
     [SerializeField] private SpriteRenderer sprite;
     [SerializeField] private Sprite buttonOff;
     [SerializeField] private Sprite buttonOn;
+
+    private bool isOn;
+
+    [SerializeField] private SlidingDoorBehavior myDoor;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -34,10 +39,17 @@ public class ButtonBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (isOn)
+        {
+            myDoor.MoveUp();
+        }
+        else
+        {
+            myDoor.MoveDown();
+        }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionStay2D(Collision2D collision)
     {
         CharacterBehavior player = collision.gameObject.GetComponent<CharacterBehavior>();
         if (player != null)
@@ -55,13 +67,15 @@ public class ButtonBehavior : MonoBehaviour
         }
     }
 
-    public void setOff()
-    {
-        sprite.sprite = buttonOff;
-    }
-
     public void setOn()
     {
+        isOn = true;
         sprite.sprite = buttonOn;
+    }
+
+    public void setOff()
+    {
+        isOn = false;
+        sprite.sprite = buttonOff;
     }
 }

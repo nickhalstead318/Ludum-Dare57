@@ -273,6 +273,7 @@ MonoBehaviour:
   sprite: {fileID: 223892603}
   buttonOff: {fileID: 21300000, guid: 96ed950899efa0246998fb6871273fba, type: 3}
   buttonOn: {fileID: 21300000, guid: b472ca1ae0eaaef4ba12e29c4c9a803e, type: 3}
+  myDoor: {fileID: 2059183453}
 --- !u!1001 &281723622
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2646,6 +2647,10 @@ PrefabInstance:
       value: -0.3
       objectReference: {fileID: 0}
     - target: {fileID: 3173326902063137055, guid: e8225a86ce140c44d94b9aa3c75cb1ad, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 363045783, guid: 6b01a790a8ed64742b61309aefe1e931, type: 3}
+    - target: {fileID: 3173326902063137055, guid: e8225a86ce140c44d94b9aa3c75cb1ad, type: 3}
       propertyPath: m_SortingOrder
       value: 2
       objectReference: {fileID: 0}
@@ -2801,6 +2806,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92d7414fba7058e4bace4c4c7dec5228, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minHeight: 0
+  maxHeight: 0
+  moveUpSpeed: 1
+  moveDownSpeed: 2
+  boxCollider: {fileID: 0}
 --- !u!1001 &358941187542157292
 PrefabInstance:
   m_ObjectHideFlags: 0
