@@ -222,6 +222,11 @@ public class CharacterBehavior : MonoBehaviour
         return isActivePlayer;
     }
 
+    public bool getIsPrime()
+    {
+        return !isClone;
+    }
+
     void OnDrawGizmosSelected()
     {
         if (groundCheck == null) return;
