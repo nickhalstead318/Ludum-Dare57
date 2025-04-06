@@ -7,10 +7,9 @@ public class ButtonBehavior : MonoBehaviour
     [SerializeField] private SpriteRenderer sprite;
     [SerializeField] private Sprite buttonOff;
     [SerializeField] private Sprite buttonOn;
+    [SerializeField] private SlidingDoorBehavior myDoor;
 
     private bool isOn;
-
-    [SerializeField] private SlidingDoorBehavior myDoor;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

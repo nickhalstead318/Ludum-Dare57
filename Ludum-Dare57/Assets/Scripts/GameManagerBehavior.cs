@@ -7,21 +7,19 @@ using UnityEngine.UI;
 
 public class GameManagerBehavior : MonoBehaviour
 {
+
+    [SerializeField] private TextMeshProUGUI textBoxText;
+    [SerializeField] private Canvas textBoxCanvas;
+    [SerializeField] private GameObject pauseMenuUI;
+
     public int cloneMax = 2;
     public CameraBehavior cameraBehavior;
 
     private Coroutine typingCoroutine;
     private string fullTextToDisplay;
-    [SerializeField]
     private float typingSpeed = 3.0f;
-    [SerializeField]
-    private TextMeshProUGUI textBoxText;
-    [SerializeField]
-    private Canvas textBoxCanvas;
-
     private bool isPaused;
-    [SerializeField]
-    private GameObject pauseMenuUI;
+
 
     [SerializeField]
     private GameObject exitScreenUI;

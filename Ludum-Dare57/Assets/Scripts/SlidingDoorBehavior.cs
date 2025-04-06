@@ -5,12 +5,12 @@ using UnityEngine.UIElements;
 public class SlidingDoorBehavior : MonoBehaviour
 {
 
-    [SerializeField] private float minHeight;
-    [SerializeField] private float maxHeight;
+    private float minHeight;
+    private float maxHeight;
 
-    [SerializeField] private bool active = false;
-    [SerializeField] private float moveUpSpeed = 1;
-    [SerializeField] private float moveDownSpeed = 1;
+    private bool active = false;
+    private float moveUpSpeed = 9;
+    private float moveDownSpeed = 18;
 
     [SerializeField] private BoxCollider2D boxCollider;
     [SerializeField] private ButtonBehavior[] buttons;
