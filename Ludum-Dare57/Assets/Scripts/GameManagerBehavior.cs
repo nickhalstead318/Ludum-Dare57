@@ -67,7 +67,7 @@ public class GameManagerBehavior : MonoBehaviour
             {
                 // If the text is already displayed, close the box
                 textBoxCanvas.gameObject.SetActive(false);
-                StartCoroutine(UnpauseAfterDelay(0.5f));
+                StartCoroutine(UnpauseAfterDelay(0.25f));
             }
         }
 

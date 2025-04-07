@@ -121,23 +121,26 @@ public class CharacterBehavior : MonoBehaviour
 
     private void CheckGrounded()
     {
-        Collider2D[] collisions = Physics2D.OverlapBoxAll(groundCheck.position, _boxCollider.size, LayerMask.GetMask("Ground"));
-        foreach (var hit in collisions)
+        if (Mathf.Abs(_rb.linearVelocity.y) < 0.05f)
         {
-            if (hit.gameObject == gameObject) continue; // ignore self
-
-            if (hit.CompareTag("Platform") || hit.CompareTag("Player"))
+            Collider2D[] collisions = Physics2D.OverlapBoxAll(groundCheck.position, _boxCollider.size, 0f);
+            foreach (var hit in collisions)
             {
-                _isGrounded = true;
-                animator.SetBool("Is Grounded", true);
-
-                if (!_gameManager.GetEnteredLevel())
+                if (hit.gameObject == gameObject) continue; // ignore self
+                
+                if (hit.CompareTag("Platform") || hit.CompareTag("Player"))
                 {
-                    _gameManager.EnterLevel();
-                }
-                return;
-            }
+                    _isGrounded = true;
+                    animator.SetBool("Is Grounded", true);
 
+                    if (!_gameManager.GetEnteredLevel())
+                    {
+                        _gameManager.EnterLevel();
+                    }
+                    return;
+                }
+
+            }
         }
 
         _isGrounded = false;
