@@ -10,7 +10,7 @@ public class CharacterBehavior : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
 
     private float moveSpeed = 5f;
-    private float jumpForce = 7f;
+    private float jumpForce = 8f;
     private float lastYPos;
 
     private bool isActivePlayer;

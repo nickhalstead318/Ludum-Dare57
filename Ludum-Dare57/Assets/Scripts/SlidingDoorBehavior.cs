@@ -7,6 +7,8 @@ public class SlidingDoorBehavior : MonoBehaviour
 
     private float minHeight;
     private float maxHeight;
+    private Vector3 startPos;
+    private float originalHeight;
 
     private bool active = false;
     private float moveUpSpeed = 9;
@@ -14,7 +16,6 @@ public class SlidingDoorBehavior : MonoBehaviour
 
     [SerializeField] private BoxCollider2D boxCollider;
     [SerializeField] private ButtonBehavior[] buttons;
-
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -25,6 +26,9 @@ public class SlidingDoorBehavior : MonoBehaviour
         {
             Debug.LogWarning("Door doesn't have a box collider");
         }
+
+        startPos = transform.position;
+        originalHeight = boxCollider.size.y;
 
         if (buttons == null)
         {
@@ -57,6 +61,14 @@ public class SlidingDoorBehavior : MonoBehaviour
         {
             MoveDown();
         }
+
+        // Clamp the top of the collider
+        float deltaY = transform.position.y - startPos.y;
+
+        // Clamp how far the door can go
+        float newHeight = Mathf.Max(0.00f, originalHeight - deltaY);
+
+        boxCollider.size = new Vector2(boxCollider.size.x, newHeight);
     }
 
     public void CheckIfActive()
@@ -87,7 +99,9 @@ public class SlidingDoorBehavior : MonoBehaviour
         // Debug.Log("I am a door, I am moving down by " + moveDownSpeed + "if I can");
         if (transform.position.y > minHeight)
         {
-            transform.position = new Vector3(transform.position.x, transform.position.y - moveDownSpeed * Time.deltaTime, 0);
+            float targetHeight = transform.position.y - moveDownSpeed * Time.deltaTime;
+            targetHeight = Mathf.Max(targetHeight, startPos.y);
+            transform.position = new Vector3(transform.position.x, targetHeight, 0);
         }
     }
 }
