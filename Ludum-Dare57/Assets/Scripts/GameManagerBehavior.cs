@@ -226,13 +226,16 @@ public class GameManagerBehavior : MonoBehaviour
         switch(level)
         {
             case 1:
-                text = "Welcome. If you wish to make it to the core, you will need to descend. Exit  through the opening ahead to go lower. Press 'Space' to continue.";
+                text = "Welcome. If you wish to make it to the core, you will need to descend. Exit  through the opening ahead to go lower. Press 'Space' to continue. Press 'Esc' to pause...or find yourself stuck...";
                 break;
             case 2:
                 text = "Dangers Lie ahead. Do not be Like your predecessors. Avoid them. Press 'Space' to jump.";
                 break;
             case 3:
                 text = "I'm not sure who designed these contraptions...but it doesn't matter. They require weight to operate...your body should more than suffice.";
+                break;
+            case 4:
+                text = "Some buttons require constant pressure. Alone, you are hopeless. Press 'E' to clone yourself and 'Tab' to switch between instances. Only the host must descend to continue...";
                 break;
         }
 
