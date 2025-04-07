@@ -6,7 +6,7 @@ public class ButtonBehavior : MonoBehaviour
     [SerializeField] private SpriteRenderer sprite;
     [SerializeField] private Sprite buttonOff;
     [SerializeField] private Sprite buttonOn;
-    [SerializeField] private SlidingDoorBehavior myDoor;
+    [SerializeField] private SlidingDoorBehavior[] myDoors;
     [SerializeField] private bool needsPressure;
 
     private bool isOn;
@@ -63,14 +63,20 @@ public class ButtonBehavior : MonoBehaviour
     {
         isOn = true;
         sprite.sprite = buttonOn;
-        myDoor.CheckIfActive();
+        for (int i = 0; i < myDoors.Length; i++)
+        {
+            myDoors[i].CheckIfActive();
+        }
     }
 
     void setOff()
     {
         isOn = false;
         sprite.sprite = buttonOff;
-        myDoor.CheckIfActive();
+        for (int i = 0; i < myDoors.Length; i++)
+        {
+            myDoors[i].CheckIfActive();
+        }
     }
 
     public bool GetStatus()

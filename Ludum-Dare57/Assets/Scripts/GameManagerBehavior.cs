@@ -247,6 +247,12 @@ public class GameManagerBehavior : MonoBehaviour
             case 5:
                 text = "Surely those clones are useful for more than just buttons...";
                 break;
+            case 6:
+                text = "Clones have a short half-Life. Don't expect them to stick around for the Long haul...";
+                break;
+            case 7:
+                text = "Buttons don't just open doors. Be careful...something must stay behind...";
+                break;
         }
 
         if(text != "")
