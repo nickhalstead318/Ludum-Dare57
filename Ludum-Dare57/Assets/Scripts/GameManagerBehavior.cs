@@ -214,8 +214,6 @@ public class GameManagerBehavior : MonoBehaviour
 
     private void WriteLevelTip(int level)
     {
-        SetPauseStatus(true);
-
         string text = "";
         switch(level)
         {
@@ -229,6 +227,7 @@ public class GameManagerBehavior : MonoBehaviour
 
         if(text != "")
         {
+            SetPauseStatus(true);
             textBoxCanvas.gameObject.SetActive(true);
             StartTyping(text);
         }

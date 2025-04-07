@@ -3,6 +3,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI;
 
 public class CharacterBehavior : MonoBehaviour
 {
@@ -193,17 +194,13 @@ public class CharacterBehavior : MonoBehaviour
                 timerFill.GetComponent<Image>().fillAmount = fillAmount;
 
                 // Set the color based on how full the circle is
-                if(fillAmount <= 0.25f)
+                if(fillAmount < 0.5f)
                 {
-                    timerFill.GetComponent<Image>().color = Color.red;
-                }
-                else if (fillAmount <= 0.5f)
-                {
-                    timerFill.GetComponent<Image>().color = Color.yellow;
+                    timerFill.GetComponent<Image>().color = Color.Lerp(Color.red, Color.yellow, fillAmount / 0.5f); ;
                 }
                 else
                 {
-                    timerFill.GetComponent<Image>().color = Color.green;
+                    timerFill.GetComponent<Image>().color = Color.Lerp(Color.yellow, Color.green, (fillAmount - 0.5f) / 0.5f);
                 }
             }
         }
@@ -223,6 +220,8 @@ public class CharacterBehavior : MonoBehaviour
         GameObject clone = Instantiate(gameObject, transform.position, Quaternion.identity);
         CharacterBehavior cloneBehavior = clone.GetComponent<CharacterBehavior>();
         cloneBehavior.isClone = true;
+
+        _gameManager.GetNextPlayer();
     }
 
     public void Activate()
