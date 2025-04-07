@@ -92,8 +92,11 @@ public class GameManagerBehavior : MonoBehaviour
 
     public void PauseGame()
     {
-        pauseMenuUI.SetActive(true);
-        SetPauseStatus(true);
+        if(!isPaused)
+        {
+            pauseMenuUI.SetActive(true);
+            SetPauseStatus(true);
+        }
     }
 
     public bool GetIsPaused()
@@ -199,6 +202,11 @@ public class GameManagerBehavior : MonoBehaviour
     }
 
     public bool CanCreateClone() {
+        // Clones cannot be created prior to level 4
+        if(SceneManager.GetActiveScene().buildIndex <= 3)
+        {
+            return false;
+        }
         // Get current list of characters in the scene
         CharacterBehavior[] players = FindObjectsByType<CharacterBehavior>(FindObjectsSortMode.InstanceID);
         
@@ -222,6 +230,9 @@ public class GameManagerBehavior : MonoBehaviour
                 break;
             case 2:
                 text = "Dangers Lie ahead. Do not be Like your predecessors. Avoid them. Press 'Space' to jump.";
+                break;
+            case 3:
+                text = "I'm not sure who designed these contraptions...but it doesn't matter. They require weight to operate...your body should more than suffice.";
                 break;
         }
 
