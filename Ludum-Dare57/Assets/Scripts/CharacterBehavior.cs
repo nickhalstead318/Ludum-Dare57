@@ -87,10 +87,15 @@ public class CharacterBehavior : MonoBehaviour
         CheckGrounded();
         if (isActivePlayer)
         {
+            _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
             Move();
             Jump();
             CreateClone();
             SwitchPlayer();
+        }
+        else
+        {
+            _rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
         }
         Fall();
         CountdownTimer();
