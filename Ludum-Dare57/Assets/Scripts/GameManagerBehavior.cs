@@ -46,15 +46,47 @@ public class GameManagerBehavior : MonoBehaviour
     [SerializeField]
     private Image mainMenuDeathButton;
 
+    private MusicBehavior musicObject;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        int currentScene = SceneManager.GetActiveScene().buildIndex;
+        int selectedTrack = 0;
+        musicObject = GameObject.FindGameObjectWithTag("Music")?.GetComponent<MusicBehavior>();
+        if(musicObject == null)
+        {
+            Debug.LogWarning("Cannot find music player!");
+        }
+        else
+        {
+            if(currentScene == 0)
+            {
+                selectedTrack = 0;
+            }
+            else if (currentScene <= 3)
+            {
+                selectedTrack = 1;
+            }
+            else
+            {
+                selectedTrack = 2;
+            }
+
+            if (musicObject.GetTrackNum() != selectedTrack || !musicObject.IsPlaying())
+            {
+                musicObject.SelectTrack(selectedTrack);
+                musicObject.StartMusic();
+            }
+        }
+
+
         screenFadeSpeed /= 100f;
-        if (SceneManager.GetActiveScene().buildIndex <= 3)
+        if (currentScene <= 3)
         {
             cloneMax = 0;
         }
-        else if (SceneManager.GetActiveScene().buildIndex <= 8)
+        else if (currentScene <= 8)
         {
             cloneMax = 1;
         }
@@ -100,6 +132,11 @@ public class GameManagerBehavior : MonoBehaviour
     {
         pauseMenuUI.SetActive(false);
         SetPauseStatus(false);
+
+        if (musicObject != null)
+        {
+            musicObject.ResumeMusic();
+        }
     }
 
     public void PauseGame()
@@ -108,6 +145,11 @@ public class GameManagerBehavior : MonoBehaviour
         {
             pauseMenuUI.SetActive(true);
             SetPauseStatus(true);
+
+            if(musicObject != null)
+            {
+                musicObject.PauseMusic();
+            }
         }
     }
 
