@@ -247,6 +247,9 @@ public class GameManagerBehavior : MonoBehaviour
             case 5:
                 text = "Surely those clones are useful for more than just buttons...";
                 break;
+            case 6:
+                text = "Buttons don't just open doors. Be careful...something must stay behind...";
+                break;
         }
 
         if(text != "")

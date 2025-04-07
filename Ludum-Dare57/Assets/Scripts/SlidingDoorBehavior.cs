@@ -16,6 +16,7 @@ public class SlidingDoorBehavior : MonoBehaviour
 
     [SerializeField] private BoxCollider2D boxCollider;
     [SerializeField] private ButtonBehavior[] buttons;
+    [SerializeField] private bool invertDoor;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -43,6 +44,11 @@ public class SlidingDoorBehavior : MonoBehaviour
 
         minHeight = transform.position.y;
         maxHeight = transform.position.y + boxCollider.size.y;
+
+        if (invertDoor)
+        {
+            transform.position = new Vector3(transform.position.x, maxHeight, 0);
+        }
     }
 
     // Update is called once per frame
@@ -53,11 +59,11 @@ public class SlidingDoorBehavior : MonoBehaviour
 
         // CheckIfActive();
 
-        if (active)
+        if ((active && !invertDoor) || (!active && invertDoor))
         {
             MoveUp();
         }
-        else
+        else if ((active && invertDoor) || (!active && !invertDoor))
         {
             MoveDown();
         }
