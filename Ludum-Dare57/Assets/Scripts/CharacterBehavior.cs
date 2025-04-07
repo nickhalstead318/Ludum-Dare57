@@ -87,10 +87,15 @@ public class CharacterBehavior : MonoBehaviour
         CheckGrounded();
         if (isActivePlayer && !_gameManager.GetIsPaused())
         {
+            _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
             Move();
             Jump();
             CreateClone();
             SwitchPlayer();
+        }
+        else
+        {
+            _rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
         }
         Fall();
         CountdownTimer();
@@ -124,7 +129,7 @@ public class CharacterBehavior : MonoBehaviour
             if (hit.CompareTag("Platform") || hit.CompareTag("Player"))
             {
                 _isGrounded = true;
-                animator.SetBool("Is Falling", false);
+                animator.SetBool("Is Grounded", true);
 
                 if (!_gameManager.GetEnteredLevel())
                 {
@@ -136,23 +141,24 @@ public class CharacterBehavior : MonoBehaviour
         }
 
         _isGrounded = false;
+        animator.SetBool("Is Grounded", false);
     }
 
     private void Jump()
     {
-        if (Input.GetButtonDown("Jump") && _isGrounded)
-        {
-            _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, jumpForce);
-            animator.SetTrigger("Jump");
-        }
+        if (!(Input.GetButtonDown("Jump") && _isGrounded))
+            return;
+        
+        _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, jumpForce);
+        animator.SetBool("Is Jumping", true);
     }
 
     private void Fall()
     {
         // Falling
-        if (transform.position.y < lastYPos && !_isGrounded)
+        if (transform.position.y < lastYPos)
         {
-            animator.SetBool("Is Falling", true);
+            animator.SetBool("Is Jumping", false);
         }
 
         lastYPos = transform.position.y;
