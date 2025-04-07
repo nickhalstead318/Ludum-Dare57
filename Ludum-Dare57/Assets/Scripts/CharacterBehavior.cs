@@ -217,6 +217,8 @@ public class CharacterBehavior : MonoBehaviour
         GameObject clone = Instantiate(gameObject, transform.position, Quaternion.identity);
         CharacterBehavior cloneBehavior = clone.GetComponent<CharacterBehavior>();
         cloneBehavior.isClone = true;
+
+        _gameManager.GetNextPlayer();
     }
 
     public void Activate()
