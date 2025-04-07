@@ -314,6 +314,9 @@ public class GameManagerBehavior : MonoBehaviour
             case 8:
                 text = "This could get messy...perhaps...another? Don't get greedy...clones cannot create more clones.";
                 break;
+            case 9:
+                text = "Well you know what they say, 3 heads are better than 2 are better than 1...";
+                break;
         }
 
         if(text != "")
