@@ -47,11 +47,17 @@ MonoBehaviour:
   textBoxText: {fileID: 0}
   textBoxCanvas: {fileID: 0}
   pauseMenuUI: {fileID: 0}
+  musicPlayingObject: {fileID: 8912787294114821279, guid: 0d69ff00dd57fab44823f2494e4cb43b, type: 3}
   cloneMax: 2
   cameraBehavior: {fileID: 0}
   exitScreenUI: {fileID: 0}
-  exitScreenFadeSpeed: 4
+  screenFadeSpeed: 5
   wellDoneText: {fileID: 0}
   keepGoingText: {fileID: 0}
   descendButton: {fileID: 0}
-  mainMenuButton: {fileID: 0}
+  mainMenuExitButton: {fileID: 0}
+  deathScreenUI: {fileID: 0}
+  foolishText: {fileID: 0}
+  riseFallText: {fileID: 0}
+  restartButton: {fileID: 0}
+  mainMenuDeathButton: {fileID: 0}

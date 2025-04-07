@@ -14,6 +14,7 @@ public class GameManagerBehavior : MonoBehaviour
     [SerializeField] private TextMeshProUGUI textBoxText;
     [SerializeField] private Canvas textBoxCanvas;
     [SerializeField] private GameObject pauseMenuUI;
+    [SerializeField] private GameObject musicPlayingObject;
 
     public int cloneMax;
     public CameraBehavior cameraBehavior;
@@ -60,7 +61,13 @@ public class GameManagerBehavior : MonoBehaviour
         musicObject = GameObject.FindGameObjectWithTag("Music")?.GetComponent<MusicBehavior>();
         if(musicObject == null)
         {
-            Debug.LogWarning("Cannot find music player!");
+            Debug.LogWarning("Cannot find music player, generating one now");
+            musicObject = Instantiate(musicPlayingObject, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity).GetComponent<MusicBehavior>();
+        }
+
+        if (musicObject == null)
+        {
+            Debug.LogWarning("Could not make music player object :(");
         }
         else
         {
