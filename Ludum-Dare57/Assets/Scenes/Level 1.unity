@@ -3952,6 +3952,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Exit Zone
       objectReference: {fileID: 0}
+    - target: {fileID: 8197961737867526462, guid: 32d2032db4ce05e4090e0d74ef627116, type: 3}
+      propertyPath: cameraBehavior
+      value: 
+      objectReference: {fileID: 250464025}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
