@@ -252,7 +252,7 @@ public class CharacterBehavior : MonoBehaviour
             // Destroy Clone
             timeToDestroy = 0;
         }
-        else
+        else if (!isClone && collision.collider.CompareTag("Spike"))
         {
             // Kill Player
             _gameManager.KillPlayer();
