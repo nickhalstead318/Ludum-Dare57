@@ -8,6 +8,7 @@ public class ButtonBehavior : MonoBehaviour
     [SerializeField] private Sprite buttonOff;
     [SerializeField] private Sprite buttonOn;
     [SerializeField] private SlidingDoorBehavior myDoor;
+    [SerializeField] private bool needsPressure;
 
     private bool isOn;
 
@@ -53,7 +54,7 @@ public class ButtonBehavior : MonoBehaviour
     private void OnCollisionExit2D(Collision2D collision)
     {
         CharacterBehavior player = collision.gameObject.GetComponent<CharacterBehavior>();
-        if (player != null)
+        if (player != null && needsPressure)
         {
             setOff();
         }
