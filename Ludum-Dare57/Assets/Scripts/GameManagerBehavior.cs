@@ -67,7 +67,7 @@ public class GameManagerBehavior : MonoBehaviour
             {
                 // If the text is already displayed, close the box
                 textBoxCanvas.gameObject.SetActive(false);
-                SetPauseStatus(false);
+                StartCoroutine(UnpauseAfterDelay(0.5f));
             }
         }
 
@@ -113,6 +113,12 @@ public class GameManagerBehavior : MonoBehaviour
             Time.timeScale = 1f;
             isPaused = false;
         }
+    }
+
+    IEnumerator UnpauseAfterDelay(float delay)
+    {
+        yield return new WaitForSecondsRealtime(delay);
+        SetPauseStatus(false);
     }
 
     public void LoadMainMenu()
