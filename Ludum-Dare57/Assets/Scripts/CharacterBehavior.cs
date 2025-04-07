@@ -224,7 +224,7 @@ public class CharacterBehavior : MonoBehaviour
 
     private void CreateCloneEvent()
     {
-        GameObject clone = Instantiate(gameObject, transform.position, Quaternion.identity);
+        GameObject clone = Instantiate(gameObject, new Vector3(transform.position.x + 2.0f,transform.position.y, transform.position.x), Quaternion.identity);
         CharacterBehavior cloneBehavior = clone.GetComponent<CharacterBehavior>();
         cloneBehavior.isClone = true;
 
