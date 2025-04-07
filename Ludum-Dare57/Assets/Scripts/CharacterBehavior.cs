@@ -29,6 +29,13 @@ public class CharacterBehavior : MonoBehaviour
 
     public static int nextCreationIndex = 0;
 
+    private void Awake()
+    {
+        // Set creation index
+        creationIndex = nextCreationIndex;
+        nextCreationIndex++;
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -37,10 +44,6 @@ public class CharacterBehavior : MonoBehaviour
 
         // Get Canvas
         _cloneTimer = transform.Find("Timer");
-
-        // Set creation index
-        creationIndex = nextCreationIndex;
-        nextCreationIndex++;
 
         // Sets up the player RigidBody component
         _rb = GetComponent<Rigidbody2D>();
