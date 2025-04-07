@@ -3,8 +3,7 @@ using static UnityEngine.GraphicsBuffer;
 
 public class BackgroundBehavior : MonoBehaviour
 {
-    [SerializeField]
-    CameraBehavior cameraBehavior;
+    // [SerializeField] CameraBehavior cameraBehavior;
 
     private float numSteps = 20;
     private float step = 0;
@@ -23,22 +22,12 @@ public class BackgroundBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        GetComponent<SpriteRenderer>().color = CalcBackgroundColor();
     }
 
-    void LateUpdate()
+    private Color CalcBackgroundColor()
     {
-        Transform target = cameraBehavior.GetTarget();
-        if (target != null)
-        {
-            transform.position = new Vector3(target.position.x, target.position.y, transform.position.z);
-            GetComponent<SpriteRenderer>().color = CalcBackgroundColor(target);
-        }
-    }
-
-    private Color CalcBackgroundColor(Transform target)
-    {
-        step = (target.position.y - startHeight) / endHeight;
+        step = (transform.position.y - startHeight) / endHeight;
         float currRed = startColor.r + (endColor.r - startColor.r) * step / numSteps;
         float currGreen = startColor.g + (endColor.g - startColor.g) * step / numSteps;
         float currBlue = startColor.b + (endColor.b - startColor.b) * step / numSteps;
