@@ -3,6 +3,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI;
 
 public class CharacterBehavior : MonoBehaviour
 {
@@ -121,7 +122,7 @@ public class CharacterBehavior : MonoBehaviour
 
     private void CheckGrounded()
     {
-        Collider2D[] collisions = Physics2D.OverlapBoxAll(groundCheck.position, _boxCollider.size, LayerMask.GetMask("Ground"));
+        Collider2D[] collisions = Physics2D.OverlapBoxAll(groundCheck.position, _boxCollider.size, 270.0f, LayerMask.GetMask("Ground"));
         foreach (var hit in collisions)
         {
             if (hit.gameObject == gameObject) continue; // ignore self
@@ -190,17 +191,13 @@ public class CharacterBehavior : MonoBehaviour
                 timerFill.GetComponent<Image>().fillAmount = fillAmount;
 
                 // Set the color based on how full the circle is
-                if(fillAmount <= 0.25f)
+                if(fillAmount < 0.5f)
                 {
-                    timerFill.GetComponent<Image>().color = Color.red;
-                }
-                else if (fillAmount <= 0.5f)
-                {
-                    timerFill.GetComponent<Image>().color = Color.yellow;
+                    timerFill.GetComponent<Image>().color = Color.Lerp(Color.red, Color.yellow, fillAmount / 0.5f); ;
                 }
                 else
                 {
-                    timerFill.GetComponent<Image>().color = Color.green;
+                    timerFill.GetComponent<Image>().color = Color.Lerp(Color.yellow, Color.green, (fillAmount - 0.5f) / 0.5f);
                 }
             }
         }
