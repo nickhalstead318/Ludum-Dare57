@@ -17,7 +17,7 @@ public class GameManagerBehavior : MonoBehaviour
 
     private Coroutine typingCoroutine;
     private string fullTextToDisplay;
-    private float typingSpeed = 0.1f;
+    private float typingSpeed = 0.025f;
     private bool isPaused;
     private bool enteredLevel = false;
 
