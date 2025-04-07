@@ -12,7 +12,7 @@ public class GameManagerBehavior : MonoBehaviour
     [SerializeField] private Canvas textBoxCanvas;
     [SerializeField] private GameObject pauseMenuUI;
 
-    public int cloneMax = 2;
+    public int cloneMax;
     public CameraBehavior cameraBehavior;
 
     private Coroutine typingCoroutine;
@@ -50,6 +50,18 @@ public class GameManagerBehavior : MonoBehaviour
     void Start()
     {
         screenFadeSpeed /= 100f;
+        if (SceneManager.GetActiveScene().buildIndex <= 3)
+        {
+            cloneMax = 0;
+        }
+        else if (SceneManager.GetActiveScene().buildIndex <= 8)
+        {
+            cloneMax = 1;
+        }
+        else
+        {
+            cloneMax = 2;
+        }
     }
 
     // Update is called once per frame
@@ -202,11 +214,6 @@ public class GameManagerBehavior : MonoBehaviour
     }
 
     public bool CanCreateClone() {
-        // Clones cannot be created prior to level 4
-        if(SceneManager.GetActiveScene().buildIndex <= 3)
-        {
-            return false;
-        }
         // Get current list of characters in the scene
         CharacterBehavior[] players = FindObjectsByType<CharacterBehavior>(FindObjectsSortMode.InstanceID);
         
@@ -236,6 +243,9 @@ public class GameManagerBehavior : MonoBehaviour
                 break;
             case 4:
                 text = "Some buttons require constant pressure. Alone, you are hopeless. Press 'E' to clone yourself and 'Tab' to switch between instances. Only the host must descend to continue...";
+                break;
+            case 5:
+                text = "Surely those clones are useful for more than just buttons...";
                 break;
         }
 
