@@ -55,7 +55,8 @@ public class GameManagerBehavior : MonoBehaviour
     void Start()
     {
         int currentScene = SceneManager.GetActiveScene().buildIndex;
-        int selectedTrack = 0;
+        Debug.Log("Current scene: " + currentScene);
+        int selectedTrack;
         musicObject = GameObject.FindGameObjectWithTag("Music")?.GetComponent<MusicBehavior>();
         if(musicObject == null)
         {
@@ -76,7 +77,7 @@ public class GameManagerBehavior : MonoBehaviour
                 selectedTrack = 2;
             }
 
-            if (musicObject.GetTrackNum() != selectedTrack || !musicObject.IsPlaying())
+            if(musicObject.GetTrackNum() != selectedTrack || !musicObject.IsPlaying())
             {
                 musicObject.SelectTrack(selectedTrack);
                 musicObject.StartMusic();

@@ -30,8 +30,8 @@ public class MusicBehavior : MonoBehaviour
             Debug.LogWarning("Invalid track number! Only " + _audioSources.Length + " tracks exist");
             return;
         }
-        AudioSource selection = _audioSources[trackNum];
-        if(selection = null)
+
+        if(_audioSources[trackNum] == null)
         {
             Debug.LogWarning("Selection found to be null: Track #" + _audioSources.Length);
             return;
@@ -42,7 +42,7 @@ public class MusicBehavior : MonoBehaviour
 
         Debug.Log("Selecting track #" + trackNum);
         // Set track and play it
-        _currentAudioSource = selection;
+        _currentAudioSource = _audioSources[trackNum];
         _currentTrackNum = trackNum;
     }
 
