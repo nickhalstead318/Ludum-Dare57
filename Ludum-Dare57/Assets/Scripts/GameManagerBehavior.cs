@@ -265,10 +265,10 @@ public class GameManagerBehavior : MonoBehaviour
         }
 
         // Activate
-        players[nextIndex].Activate();
+        sortedPlayers[nextIndex].Activate();
 
         // Update the camera to follow the right character
-        cameraBehavior.UpdateTarget(players[nextIndex].transform);
+        cameraBehavior.UpdateTarget(sortedPlayers[nextIndex].transform);
     }
 
     public bool CanCreateClone() {
