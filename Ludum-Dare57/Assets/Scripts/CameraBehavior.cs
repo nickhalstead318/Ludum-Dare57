@@ -2,16 +2,24 @@ using System;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class CameraBehavior : MonoBehaviour
 {
+    [SerializeField] private float cameraBaseSpeed = 5.0f;
+    [SerializeField] private float camSpeed;
+    [SerializeField] private BackgroundBehavior background;
+
+    [SerializeField] private float camZOffset = -10;
+
     public Camera mainCamera;
     public Transform target;
-    public Vector3 offset;
-    public float lagTime = 2.0f;
-    private bool isSwitching;
+    private Vector3 cameraOffset;
+
+    [SerializeField] private bool isSwitching;
     public float switchThreshhold = 0.1f;
-    private Coroutine switchingCoroutine;
+    
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -22,24 +30,63 @@ public class CameraBehavior : MonoBehaviour
             Debug.LogWarning("Camera script attached to object without camera component");
         }
 
-        if (offset == null)
+
+        if (target == null)
         {
-            Debug.LogWarning("Camera offset not defined");
+            Debug.LogWarning("Camera has no target");
         }
 
-        if (offset.z < 1 && offset.z > -1)
+        if (camZOffset >= 0)
         {
-            Debug.LogWarning("Confirm camera Z offset should be: " + offset.z);
+            Debug.LogWarning("Camera on top of scene, resetting to -10...");
+            camZOffset = -10;
         }
+
+        if (background == null)
+        {
+            Debug.LogWarning("Background not attached to camera");
+        }
+
+        camSpeed = cameraBaseSpeed;
+        cameraOffset = new Vector3(0, 0, camZOffset);
     }
 
     // Called once per frame
     void LateUpdate()
     {
-        if (!isSwitching && target != null)
+        if (target == null)
         {
-            transform.position = target.position + offset;
+            return;
         }
+
+        Vector3 targetPosition = target.position;
+        Vector3 currrentPosition = transform.position;
+
+        float distance = Vector3.Distance(currrentPosition, targetPosition + cameraOffset);
+        if (distance < switchThreshhold)
+        {
+            isSwitching = false;
+            camSpeed = cameraBaseSpeed;
+        }
+
+        if (!isSwitching)
+        {
+            transform.position = targetPosition + cameraOffset;
+            background.transform.position = targetPosition;
+            return;
+        }
+        else
+        {
+            float step = camSpeed * Time.deltaTime;
+            if (distance > 1)
+            {
+                step *= distance;
+            }
+            transform.position = Vector3.MoveTowards(currrentPosition, targetPosition + cameraOffset, step);
+            background.transform.position = transform.position - cameraOffset;
+            camSpeed += 0.1f;
+        }
+        
     }
 
     public Transform GetTarget()
@@ -49,66 +96,9 @@ public class CameraBehavior : MonoBehaviour
 
     public void UpdateTarget(Transform newTarget)
     {
-        if(target == null || newTarget == null)
-        {
-            target = newTarget;
-            return;
-        }
-
-        if (switchingCoroutine != null)
-        {
-            StopCoroutine(switchingCoroutine);
-        }
-
-        switchingCoroutine = StartCoroutine(SmoothSwitch(newTarget));
-
         // Update the target we are following
         isSwitching = true;
         target = newTarget;
-        // StartCoroutine(WaitToSnap());
-    }
-
-    IEnumerator SmoothSwitch(Transform newTarget)
-    {
-        isSwitching = true;
-
-        Vector3 targetPos = target.position + offset;
-
-        Vector3 startPos = transform.position;
-        Vector3 endPos = newTarget.position + offset;
-        float elapsed = 0f;
-
-        while (elapsed < lagTime)
-        {
-            elapsed += Time.deltaTime;
-            float t = elapsed / lagTime;
-            transform.position = Vector3.Lerp(startPos, endPos, t);
-            yield return null;
-        }
-
-        // Final snap to ensure exact position
-        transform.position = newTarget.position + offset;
-        target = newTarget;
-        isSwitching = false;
-
-        if (isSwitching)
-        {
-            Vector3 currPos = transform.position;
-            float distance = Vector3.Distance(currPos, targetPos);
-            float speed = distance / lagTime;
-            transform.position = Vector3.MoveTowards(currPos, targetPos, speed * Time.deltaTime);
-
-            // Check if we've reached (or are extremely close to) the target
-            if (distance < switchThreshhold)
-            {
-                isSwitching = false;
-            }
-        }
-
-        else
-        {
-            transform.position = target.position + offset;
-        }
     }
     
 }
