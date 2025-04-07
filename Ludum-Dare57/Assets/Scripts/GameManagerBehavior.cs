@@ -1,7 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -54,7 +57,7 @@ public class GameManagerBehavior : MonoBehaviour
         {
             cloneMax = 0;
         }
-        else if (SceneManager.GetActiveScene().buildIndex <= 8)
+        else if (SceneManager.GetActiveScene().buildIndex <= 7)
         {
             cloneMax = 1;
         }
@@ -183,30 +186,42 @@ public class GameManagerBehavior : MonoBehaviour
         return enteredLevel;
     }
 
-    public void GetNextPlayer()
+    public void GetNextPlayer(bool latest)
     {
         // Get current list of characters in the scene
         CharacterBehavior[] players = FindObjectsByType<CharacterBehavior>(FindObjectsSortMode.None);
+        List<CharacterBehavior> sortedPlayers = players.OrderBy(c => c.creationIndex).ToList();
 
-        if (players.Length <= 1)
+        if (sortedPlayers.Count <= 1)
         {
             return;
         }
 
         // Find the active player and deactivate it
         int currentIndex = -1;
-        for (int i = 0; i < players.Length; i++)
+        int nextIndex;
+        for (int i = 0; i < sortedPlayers.Count; i++)
         {
-            if (players[i].getIsActive())
+            if (sortedPlayers[i].getIsActive())
             {
                 currentIndex = i;
-                players[i].Deactivate();
+                sortedPlayers[i].Deactivate();
                 break;
             }
         }
 
-        // Get the next character to activate
-        int nextIndex = (currentIndex + 1) % players.Length;
+        if (latest)
+        {
+            // Get the most recent character
+            nextIndex = sortedPlayers.Count - 1;
+        }
+        else
+        {
+            // Get the next character to activate
+            nextIndex = (currentIndex + 1) % sortedPlayers.Count;
+        }
+
+        // Activate
         players[nextIndex].Activate();
 
         // Update the camera to follow the right character
@@ -215,7 +230,7 @@ public class GameManagerBehavior : MonoBehaviour
 
     public bool CanCreateClone() {
         // Get current list of characters in the scene
-        CharacterBehavior[] players = FindObjectsByType<CharacterBehavior>(FindObjectsSortMode.InstanceID);
+        CharacterBehavior[] players = FindObjectsByType<CharacterBehavior>(FindObjectsSortMode.None);
         
         // If we've reached the maximum number of clones, then we can make no more
         if(players.Length >= cloneMax + 1)
@@ -252,6 +267,9 @@ public class GameManagerBehavior : MonoBehaviour
                 break;
             case 7:
                 text = "Buttons don't just open doors. Be careful...something must stay behind...";
+                break;
+            case 8:
+                text = "This could get messy...perhaps...another? Don't get greedy...clones cannot create more clones.";
                 break;
         }
 

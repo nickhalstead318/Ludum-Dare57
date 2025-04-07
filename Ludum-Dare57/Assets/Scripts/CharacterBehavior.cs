@@ -25,6 +25,9 @@ public class CharacterBehavior : MonoBehaviour
     private float timeToDestroy = 100f;
     private Transform _cloneTimer;
     private Animator animator;
+    public int creationIndex;
+
+    public static int nextCreationIndex = 0;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -34,6 +37,10 @@ public class CharacterBehavior : MonoBehaviour
 
         // Get Canvas
         _cloneTimer = transform.Find("Timer");
+
+        // Set creation index
+        creationIndex = nextCreationIndex;
+        nextCreationIndex++;
 
         // Sets up the player RigidBody component
         _rb = GetComponent<Rigidbody2D>();
@@ -180,7 +187,7 @@ public class CharacterBehavior : MonoBehaviour
                 // Switch active player if this clone was the active one
                 if(getIsActive() || isActivating)
                 {
-                    _gameManager.GetNextPlayer();
+                    _gameManager.GetNextPlayer(false);
                 }
 
                 // Destroy the clone
@@ -221,7 +228,7 @@ public class CharacterBehavior : MonoBehaviour
         CharacterBehavior cloneBehavior = clone.GetComponent<CharacterBehavior>();
         cloneBehavior.isClone = true;
 
-        SwitchPlayer();
+        SwitchPlayer(true);
     }
 
     public void Activate()
@@ -266,12 +273,12 @@ public class CharacterBehavior : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            SwitchPlayer();
+            SwitchPlayer(false);
         }
     }
-    private void SwitchPlayer()
+    private void SwitchPlayer(bool latest)
     {
-        _gameManager.GetNextPlayer();
+        _gameManager.GetNextPlayer(latest);
 
         // Make sure the player stops moving horizontally
         _rb.linearVelocity = new Vector3(0f, _rb.linearVelocity.y, 0f);
