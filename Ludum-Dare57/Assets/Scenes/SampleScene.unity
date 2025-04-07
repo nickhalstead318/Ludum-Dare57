@@ -953,9 +953,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4973ebe2a77ed2d4ab66e2569d40b207, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraBaseSpeed: 5
+  camSpeed: 1
+  background: {fileID: 1463863368}
   mainCamera: {fileID: 330585545}
   target: {fileID: 16484300}
   offset: {x: 0, y: 0, z: -10}
+  isSwitching: 0
+  switchThreshhold: 0.1
 --- !u!1001 &472226838
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3065,6 +3070,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7402823787279590969, guid: 17be0067bf2c9934baf2492440829aa8, type: 3}
   m_PrefabInstance: {fileID: 1443741495}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1463863368 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5186693270672659201, guid: 246fa7f56028ea343a36d1aed0340a55, type: 3}
+  m_PrefabInstance: {fileID: 358941187542157292}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee92c1441b8efa446ad5dcbf5a56d11d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1498331061
 GameObject:
   m_ObjectHideFlags: 0
