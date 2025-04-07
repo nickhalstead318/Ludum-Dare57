@@ -92,7 +92,7 @@ public class CharacterBehavior : MonoBehaviour
             Move();
             Jump();
             CreateClone();
-            SwitchPlayer();
+            CheckSwitchPlayer();
         }
         else
         {
@@ -221,7 +221,7 @@ public class CharacterBehavior : MonoBehaviour
         CharacterBehavior cloneBehavior = clone.GetComponent<CharacterBehavior>();
         cloneBehavior.isClone = true;
 
-        _gameManager.GetNextPlayer();
+        SwitchPlayer();
     }
 
     public void Activate()
@@ -261,16 +261,21 @@ public class CharacterBehavior : MonoBehaviour
         }
     }
 
-    private void SwitchPlayer()
+
+    private void CheckSwitchPlayer()
     {
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            _gameManager.GetNextPlayer();
-
-            // Make sure the player stops moving horizontally
-            _rb.linearVelocity = new Vector3(0f, _rb.linearVelocity.y, 0f);
-            animator.SetInteger("Move Direction", 0);
+            SwitchPlayer();
         }
+    }
+    private void SwitchPlayer()
+    {
+        _gameManager.GetNextPlayer();
+
+        // Make sure the player stops moving horizontally
+        _rb.linearVelocity = new Vector3(0f, _rb.linearVelocity.y, 0f);
+        animator.SetInteger("Move Direction", 0);
     }
 
     private void StartCloneTimer()
