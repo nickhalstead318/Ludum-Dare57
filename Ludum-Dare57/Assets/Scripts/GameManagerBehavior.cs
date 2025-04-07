@@ -214,14 +214,13 @@ public class GameManagerBehavior : MonoBehaviour
         switch(level)
         {
             case 1:
-                text = "Welcome. If you wish to make it to the core, you will need to descend. Exit through the opening ahead to go lower.";
+                text = "Welcome. If you wish to make it to the core, you will need to descend. Exit  through the opening ahead to go lower. Press 'Space' to continue.";
                 break;
             case 2:
                 text = "Dangers Lie ahead. Do not be Like your predecessors. Avoid them. Press 'Space' to jump.";
                 break;
         }
 
-        Debug.Log(text);
         if(text != "")
         {
             textBoxCanvas.gameObject.SetActive(true);
