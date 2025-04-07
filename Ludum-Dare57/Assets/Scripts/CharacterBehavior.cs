@@ -85,7 +85,7 @@ public class CharacterBehavior : MonoBehaviour
     void Update()
     {
         CheckGrounded();
-        if (isActivePlayer)
+        if (isActivePlayer && !_gameManager.GetIsPaused())
         {
             _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
             Move();
@@ -243,6 +243,20 @@ public class CharacterBehavior : MonoBehaviour
     {
         // Deactivate this player
         isActivePlayer = false;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (isClone && collision.collider.CompareTag("Spike"))
+        {
+            // Destroy Clone
+            timeToDestroy = 0;
+        }
+        else
+        {
+            // Kill Player
+            _gameManager.KillPlayer();
+        }
     }
 
     private void SwitchPlayer()
