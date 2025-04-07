@@ -17,7 +17,7 @@ public class GameManagerBehavior : MonoBehaviour
 
     private Coroutine typingCoroutine;
     private string fullTextToDisplay;
-    private float typingSpeed = 3.0f;
+    private float typingSpeed = 0.1f;
     private bool isPaused;
     private bool enteredLevel = false;
 
@@ -25,7 +25,7 @@ public class GameManagerBehavior : MonoBehaviour
     [SerializeField]
     private GameObject exitScreenUI;
     [SerializeField]
-    private float exitScreenFadeSpeed = 5f;
+    private float screenFadeSpeed = 5f;
     [SerializeField]
     private TextMeshProUGUI wellDoneText;
     [SerializeField]
@@ -33,18 +33,29 @@ public class GameManagerBehavior : MonoBehaviour
     [SerializeField]
     private Image descendButton;
     [SerializeField]
-    private Image mainMenuButton;
+    private Image mainMenuExitButton;
+
+    [SerializeField]
+    private GameObject deathScreenUI;
+    [SerializeField]
+    private TextMeshProUGUI foolishText;
+    [SerializeField]
+    private TextMeshProUGUI riseFallText;
+    [SerializeField]
+    private Image restartButton;
+    [SerializeField]
+    private Image mainMenuDeathButton;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        screenFadeSpeed /= 100f;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.T))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             if (typingCoroutine != null && textBoxText.text != fullTextToDisplay)
             {
@@ -52,16 +63,11 @@ public class GameManagerBehavior : MonoBehaviour
                 StopCoroutine(typingCoroutine);
                 textBoxText.text = fullTextToDisplay;
             }
-            else if (!textBoxCanvas.gameObject.activeSelf)
-            {
-                // Debug for now, just shows the text if it isn't there already. Remove later
-                textBoxCanvas.gameObject.SetActive(true);
-                StartTyping("Something must stay behind...");
-            }
             else
             {
                 // If the text is already displayed, close the box
                 textBoxCanvas.gameObject.SetActive(false);
+                SetPauseStatus(false);
             }
         }
 
@@ -81,15 +87,32 @@ public class GameManagerBehavior : MonoBehaviour
     public void ResumeGame()
     {
         pauseMenuUI.SetActive(false);
-        Time.timeScale = 1f;
-        isPaused = false;
+        SetPauseStatus(false);
     }
 
     public void PauseGame()
     {
         pauseMenuUI.SetActive(true);
-        Time.timeScale = 0f;
-        isPaused = true;
+        SetPauseStatus(true);
+    }
+
+    public bool GetIsPaused()
+    {
+        return isPaused;
+    }
+
+    private void SetPauseStatus(bool shouldPause)
+    {
+        if (shouldPause)
+        {
+            Time.timeScale = 0f;
+            isPaused = true;
+        }
+        else
+        {
+            Time.timeScale = 1f;
+            isPaused = false;
+        }
     }
 
     public void LoadMainMenu()
@@ -131,6 +154,7 @@ public class GameManagerBehavior : MonoBehaviour
         CharacterBehavior[] players = FindObjectsByType<CharacterBehavior>(FindObjectsSortMode.None);
         cameraBehavior.UpdateTarget(players[0].transform);
         enteredLevel = true;
+        WriteLevelTip(SceneManager.GetActiveScene().buildIndex);
     }
 
     public bool GetEnteredLevel()
@@ -182,6 +206,29 @@ public class GameManagerBehavior : MonoBehaviour
         return true;
     }
 
+    private void WriteLevelTip(int level)
+    {
+        SetPauseStatus(true);
+
+        string text = "";
+        switch(level)
+        {
+            case 1:
+                text = "Welcome. If you wish to make it to the core, you will need to descend. Exit through the opening ahead to go lower.";
+                break;
+            case 2:
+                text = "Dangers Lie ahead. Do not be Like your predecessors. Avoid them. Press 'Space' to jump.";
+                break;
+        }
+
+        Debug.Log(text);
+        if(text != "")
+        {
+            textBoxCanvas.gameObject.SetActive(true);
+            StartTyping(text);
+        }
+    }
+
     public void StartTyping(string message)
     {
         // Stop any current coroutines that are typing
@@ -204,7 +251,7 @@ public class GameManagerBehavior : MonoBehaviour
         foreach (char c in fullTextToDisplay)
         {
             textBoxText.text += c;
-            yield return new WaitForSeconds(typingSpeed);
+            yield return new WaitForSecondsRealtime(typingSpeed);
         }
     }
 
@@ -219,8 +266,8 @@ public class GameManagerBehavior : MonoBehaviour
         TextMeshProUGUI descendText = descendButton.GetComponentInChildren<TextMeshProUGUI>();
         descendText.color = new Color(descendText.color.r, descendText.color.g, descendText.color.b, 0);
 
-        mainMenuButton.color = new Color(mainMenuButton.color.r, mainMenuButton.color.g, mainMenuButton.color.b, 0);
-        TextMeshProUGUI mainMenuText = mainMenuButton.GetComponentInChildren<TextMeshProUGUI>();
+        mainMenuExitButton.color = new Color(mainMenuExitButton.color.r, mainMenuExitButton.color.g, mainMenuExitButton.color.b, 0);
+        TextMeshProUGUI mainMenuText = mainMenuExitButton.GetComponentInChildren<TextMeshProUGUI>();
         mainMenuText.color = new Color(mainMenuText.color.r, mainMenuText.color.g, mainMenuText.color.b, 0);
 
         exitScreenUI.SetActive(true);
@@ -229,41 +276,94 @@ public class GameManagerBehavior : MonoBehaviour
 
     IEnumerator FadeInExitScreen()
     {
-        exitScreenFadeSpeed /= 100f;
         Image exitScreenImage = exitScreenUI.GetComponent<Image>();
         
         // Loop over slowly fading the different parts of the screen in
         for (float alpha = 0; alpha <= 220f; alpha += 10)
         {
-            Debug.Log(alpha);
             exitScreenImage.color = new Color(exitScreenImage.color.r, exitScreenImage.color.g, exitScreenImage.color.b, alpha / 255f);
-            yield return new WaitForSecondsRealtime(exitScreenFadeSpeed);
+            yield return new WaitForSecondsRealtime(screenFadeSpeed);
         }
 
-        Time.timeScale = 0f;
-        isPaused = true;
+        SetPauseStatus(true);
 
         for (float alpha = 0; alpha <= 220f; alpha += 10)
         {
             wellDoneText.color = new Color(wellDoneText.color.r, wellDoneText.color.g, wellDoneText.color.b, alpha / 255f);
-            yield return new WaitForSecondsRealtime(exitScreenFadeSpeed);
+            yield return new WaitForSecondsRealtime(screenFadeSpeed);
         }
 
         for (float alpha = 0; alpha <= 220f; alpha += 10)
         {
             keepGoingText.color = new Color(keepGoingText.color.r, keepGoingText.color.g, keepGoingText.color.b, alpha / 255f);
-            yield return new WaitForSecondsRealtime(exitScreenFadeSpeed);
+            yield return new WaitForSecondsRealtime(screenFadeSpeed);
         }
 
         TextMeshProUGUI descendText = descendButton.GetComponentInChildren<TextMeshProUGUI>();
-        TextMeshProUGUI mainMenuText = mainMenuButton.GetComponentInChildren<TextMeshProUGUI>();
+        TextMeshProUGUI mainMenuText = mainMenuExitButton.GetComponentInChildren<TextMeshProUGUI>();
         for (float alpha = 0; alpha <= 220f; alpha += 10)
         {
             descendButton.color = new Color(descendButton.color.r, descendButton.color.g, descendButton.color.b, alpha / 255f);
             descendText.color = new Color(descendText.color.r, descendText.color.g, descendText.color.b, alpha / 255f);
-            mainMenuButton.color = new Color(mainMenuButton.color.r, mainMenuButton.color.g, mainMenuButton.color.b, alpha / 255f);
+            mainMenuExitButton.color = new Color(mainMenuExitButton.color.r, mainMenuExitButton.color.g, mainMenuExitButton.color.b, alpha / 255f);
             mainMenuText.color = new Color(mainMenuText.color.r, mainMenuText.color.g, mainMenuText.color.b, alpha / 255f);
-            yield return new WaitForSecondsRealtime(exitScreenFadeSpeed);
+            yield return new WaitForSecondsRealtime(screenFadeSpeed);
+        }
+    }
+
+    public void KillPlayer()
+    {
+        Image exitScreenImage = deathScreenUI.GetComponent<Image>();
+        exitScreenImage.color = new Color(exitScreenImage.color.r, exitScreenImage.color.g, exitScreenImage.color.b, 0);
+        foolishText.color = new Color(foolishText.color.r, foolishText.color.g, foolishText.color.b, 0);
+        riseFallText.color = new Color(riseFallText.color.r, riseFallText.color.g, riseFallText.color.b, 0);
+
+        restartButton.color = new Color(restartButton.color.r, restartButton.color.g, restartButton.color.b, 0);
+        TextMeshProUGUI restartText = restartButton.GetComponentInChildren<TextMeshProUGUI>();
+        restartText.color = new Color(restartText.color.r, restartText.color.g, restartText.color.b, 0);
+
+        mainMenuDeathButton.color = new Color(mainMenuDeathButton.color.r, mainMenuDeathButton.color.g, mainMenuDeathButton.color.b, 0);
+        TextMeshProUGUI mainMenuText = mainMenuDeathButton.GetComponentInChildren<TextMeshProUGUI>();
+        mainMenuText.color = new Color(mainMenuText.color.r, mainMenuText.color.g, mainMenuText.color.b, 0);
+
+        deathScreenUI.SetActive(true);
+        SetPauseStatus(true);
+
+        StartCoroutine(FadeInDeathScreen());
+    }
+
+    IEnumerator FadeInDeathScreen()
+    {
+        Image deathScreenImage = deathScreenUI.GetComponent<Image>();
+
+        // Loop over slowly fading the different parts of the screen in
+        for (float alpha = 0; alpha <= 220f; alpha += 10)
+        {
+            deathScreenImage.color = new Color(deathScreenImage.color.r, deathScreenImage.color.g, deathScreenImage.color.b, alpha / 255f);
+            yield return new WaitForSecondsRealtime(screenFadeSpeed);
+        }
+
+        for (float alpha = 0; alpha <= 220f; alpha += 10)
+        {
+            foolishText.color = new Color(foolishText.color.r, foolishText.color.g, foolishText.color.b, alpha / 255f);
+            yield return new WaitForSecondsRealtime(screenFadeSpeed);
+        }
+
+        for (float alpha = 0; alpha <= 220f; alpha += 10)
+        {
+            riseFallText.color = new Color(riseFallText.color.r, riseFallText.color.g, riseFallText.color.b, alpha / 255f);
+            yield return new WaitForSecondsRealtime(screenFadeSpeed);
+        }
+
+        TextMeshProUGUI restartText = restartButton.GetComponentInChildren<TextMeshProUGUI>();
+        TextMeshProUGUI mainMenuText = mainMenuDeathButton.GetComponentInChildren<TextMeshProUGUI>();
+        for (float alpha = 0; alpha <= 220f; alpha += 10)
+        {
+            restartButton.color = new Color(restartButton.color.r, restartButton.color.g, restartButton.color.b, alpha / 255f);
+            restartText.color = new Color(restartText.color.r, restartText.color.g, restartText.color.b, alpha / 255f);
+            mainMenuDeathButton.color = new Color(mainMenuDeathButton.color.r, mainMenuDeathButton.color.g, mainMenuDeathButton.color.b, alpha / 255f);
+            mainMenuText.color = new Color(mainMenuText.color.r, mainMenuText.color.g, mainMenuText.color.b, alpha / 255f);
+            yield return new WaitForSecondsRealtime(screenFadeSpeed);
         }
     }
 }

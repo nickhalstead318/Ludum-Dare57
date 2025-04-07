@@ -30,12 +30,6 @@ public class CameraBehavior : MonoBehaviour
             Debug.LogWarning("Camera script attached to object without camera component");
         }
 
-
-        if (target == null)
-        {
-            Debug.LogWarning("Camera has no target");
-        }
-
         if (camZOffset >= 0)
         {
             Debug.LogWarning("Camera on top of scene, resetting to -10...");
