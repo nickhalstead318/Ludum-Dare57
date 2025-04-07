@@ -19,6 +19,7 @@ public class GameManagerBehavior : MonoBehaviour
     private string fullTextToDisplay;
     private float typingSpeed = 3.0f;
     private bool isPaused;
+    private bool enteredLevel = false;
 
 
     [SerializeField]
@@ -63,7 +64,8 @@ public class GameManagerBehavior : MonoBehaviour
                 textBoxCanvas.gameObject.SetActive(false);
             }
         }
-        else if (Input.GetKeyDown(KeyCode.Escape))
+
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (isPaused)
             {
@@ -122,6 +124,18 @@ public class GameManagerBehavior : MonoBehaviour
             // Loop back to first scene
             SceneManager.LoadScene(0);
         }
+    }
+
+    public void EnterLevel()
+    {
+        CharacterBehavior[] players = FindObjectsByType<CharacterBehavior>(FindObjectsSortMode.None);
+        cameraBehavior.UpdateTarget(players[0].transform);
+        enteredLevel = true;
+    }
+
+    public bool GetEnteredLevel()
+    {
+        return enteredLevel;
     }
 
     public void GetNextPlayer()
