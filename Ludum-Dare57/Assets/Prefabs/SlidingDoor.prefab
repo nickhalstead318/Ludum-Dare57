@@ -208,13 +208,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92d7414fba7058e4bace4c4c7dec5228, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minHeight: 0
-  maxHeight: 0
-  active: 0
-  moveUpSpeed: 1
-  moveDownSpeed: 1
   boxCollider: {fileID: 7429539755663829579}
-  buttons: []
+  buttons:
+  - {fileID: 0}
 --- !u!1 &9008262159391036096
 GameObject:
   m_ObjectHideFlags: 0

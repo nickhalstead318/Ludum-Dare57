@@ -44,9 +44,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f644a9972609aef43ab664d72239a898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cloneMax: 2
-  cameraBehavior: {fileID: 0}
-  typingSpeed: 0.1
   textBoxText: {fileID: 0}
   textBoxCanvas: {fileID: 0}
   pauseMenuUI: {fileID: 0}
+  cloneMax: 2
+  cameraBehavior: {fileID: 0}
+  exitScreenUI: {fileID: 0}
+  exitScreenFadeSpeed: 4
+  wellDoneText: {fileID: 0}
+  keepGoingText: {fileID: 0}
+  descendButton: {fileID: 0}
+  mainMenuButton: {fileID: 0}

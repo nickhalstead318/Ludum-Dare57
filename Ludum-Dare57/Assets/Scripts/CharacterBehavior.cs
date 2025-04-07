@@ -125,6 +125,11 @@ public class CharacterBehavior : MonoBehaviour
             {
                 _isGrounded = true;
                 animator.SetBool("Is Falling", false);
+
+                if (!_gameManager.GetEnteredLevel())
+                {
+                    _gameManager.EnterLevel();
+                }
                 return;
             }
 
