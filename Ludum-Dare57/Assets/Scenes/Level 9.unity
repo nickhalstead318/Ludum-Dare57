@@ -8645,10 +8645,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1422808572}
-    - target: {fileID: 2052904244265186438, guid: 6b5b5957a93e2064d9f8b959f03d5dd0, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: LoadMainMenu
-      objectReference: {fileID: 0}
     - target: {fileID: 4897130728944468506, guid: 6b5b5957a93e2064d9f8b959f03d5dd0, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -8733,14 +8729,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1422808572}
-    - target: {fileID: 5606285526152364377, guid: 6b5b5957a93e2064d9f8b959f03d5dd0, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ResumeGame
-      objectReference: {fileID: 0}
-    - target: {fileID: 6731943596788285540, guid: 6b5b5957a93e2064d9f8b959f03d5dd0, type: 3}
-      propertyPath: m_text
-      value: 'Level IX: Teamwork'
-      objectReference: {fileID: 0}
     - target: {fileID: 7979810365870620141, guid: 6b5b5957a93e2064d9f8b959f03d5dd0, type: 3}
       propertyPath: m_Name
       value: Pause Screen
@@ -8749,10 +8737,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1422808572}
-    - target: {fileID: 9169551078276866454, guid: 6b5b5957a93e2064d9f8b959f03d5dd0, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ResetScene
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -10445,7 +10429,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2163661908626336234, guid: c04f2e84c153c4044a20d0a9c540d88e, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 700
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 2367959455066543442, guid: c04f2e84c153c4044a20d0a9c540d88e, type: 3}
       propertyPath: m_Name
@@ -16053,6 +16037,10 @@ PrefabInstance:
     - target: {fileID: 5867653888250971960, guid: 42215fbe4e54a2045b0ee0364d0671a9, type: 3}
       propertyPath: m_Name
       value: Death Screen
+      objectReference: {fileID: 0}
+    - target: {fileID: 5867653888250971960, guid: 42215fbe4e54a2045b0ee0364d0671a9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6457302538560667695, guid: 42215fbe4e54a2045b0ee0364d0671a9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target

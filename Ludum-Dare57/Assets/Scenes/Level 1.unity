@@ -3894,6 +3894,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: ResumeGame
       objectReference: {fileID: 0}
+    - target: {fileID: 6731943596788285540, guid: 6b5b5957a93e2064d9f8b959f03d5dd0, type: 3}
+      propertyPath: m_text
+      value: 'Level I: Initial Descent'
+      objectReference: {fileID: 0}
     - target: {fileID: 7979810365870620141, guid: 6b5b5957a93e2064d9f8b959f03d5dd0, type: 3}
       propertyPath: m_Name
       value: Pause Screen
@@ -4431,10 +4435,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1422808572}
-    - target: {fileID: 3549599912674823206, guid: c04f2e84c153c4044a20d0a9c540d88e, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: LoadMainMenu
-      objectReference: {fileID: 0}
     - target: {fileID: 4896580653810642064, guid: c04f2e84c153c4044a20d0a9c540d88e, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -4519,10 +4519,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1422808572}
-    - target: {fileID: 7224075462926821752, guid: c04f2e84c153c4044a20d0a9c540d88e, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: LoadNextScene
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
